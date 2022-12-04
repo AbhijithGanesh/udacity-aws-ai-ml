@@ -52,7 +52,6 @@ def classify_images(images_dir, results_dic, model):
             results_dic[images_dir + "\\" + ky][2] = 1
         else:
             results_dic[images_dir + "\\" + ky][2] = 0
-            
     """
     Creates classifier labels with classifier function, compares pet labels to 
     the classifier labels, and adds the classifier label and the comparison of 
@@ -89,6 +88,3 @@ def classify_images(images_dir, results_dic, model):
            None - results_dic is mutable data type so no return needed.         
     """
     None
-
-
-classify_images('pet_images/', {}, 'vgg')
