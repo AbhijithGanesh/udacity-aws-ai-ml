@@ -47,11 +47,11 @@ def classify_images(images_dir, results_dic, model):
         _split = _result.split(",")
         joined_str = (join_strings(ky.split("_")[0], ky.split("_")[1]))
 
-        results_dic[ky][1] = _result
+        results_dic[ky].insert(1, _result)
         if joined_str in _split:
-            results_dic[images_dir + "\\" + ky][2] = 1
+            results_dic[ky].insert(2, 1)
         else:
-            results_dic[images_dir + "\\" + ky][2] = 0
+            results_dic[ky].insert(2, 0)
     """
     Creates classifier labels with classifier function, compares pet labels to 
     the classifier labels, and adds the classifier label and the comparison of 
