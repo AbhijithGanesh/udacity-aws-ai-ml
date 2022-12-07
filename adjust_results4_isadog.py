@@ -87,9 +87,3 @@ def adjust_results4_isadog(results_dic, dogfile):
            None - results_dic is mutable data type so no return needed.
     """
     None
-
-
-results_dict = get_pet_labels('pet_images/')
-classify_images('pet_images/', results_dict, 'vgg')
-adjust_results4_isadog(results_dict, "dognames.txt")
-print(results_dict)

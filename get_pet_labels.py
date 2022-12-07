@@ -25,10 +25,13 @@ from os import listdir
 #
 
 
-def join_strings(str_1: str, str_2: str) -> str:
-    if str_2.isalpha():
-        return str_1.lower() + " " + str_2.lower()
-    return str_1.lower()
+def join_strings(values: list) -> str:
+    output: str = ""
+    for i in values:
+        if i.isalpha():
+            output += i + " "
+
+    return output.strip()
 
 
 def get_pet_labels(image_dir):
@@ -53,10 +56,15 @@ def get_pet_labels(image_dir):
     results_dict: dict = {}
 
     for i in range(0, len(_dir)):
-        results_dict[_dir[i]] = [
-            join_strings(_dir[i].split("_")[0], _dir[i].split("_")[1])
-        ]
+        if (_dir[i][0] != "."):
+            values = _dir[i].lower().split("_")
 
-    # Replace None with the results_dic dictionary that you created with this
-    # function
+            if _dir[i] not in results_dict.keys():
+                results_dict[_dir[i]] = [join_strings(values)]
+
+            else:
+                print(
+                    f"** Warning: Duplicate files exist in directory: {_dir[i]} **",
+                )
+
     return results_dict
