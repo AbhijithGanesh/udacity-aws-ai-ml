@@ -43,10 +43,10 @@ def join_strings(values: list) -> str:
 
 def classify_images(images_dir, results_dic, model):
 
-    for ky, val in results_dic.items():
+    for ky in results_dic:
         _result = classifier(images_dir + "/" + ky, model).strip().lower()
 
-        if val[0] in _result:
+        if results_dic[ky][0] in _result:
             results_dic[ky].insert(1, _result)
             results_dic[ky].insert(2, 1)
         else:

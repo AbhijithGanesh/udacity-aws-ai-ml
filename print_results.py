@@ -82,7 +82,7 @@ def print_results(results_dic,
             f"Number of incorrect breeds: {results_stats_dict['n_dogs_img']-results_stats_dict['n_correct_breed']}"
         )
         print(
-            f"Percentage of incorrect breed: {100-results_stats_dict['pct_correct_vreed']}"
+            f"Percentage of incorrect breed: {100-results_stats_dict['pct_correct_breed']}"
         )
 
 
