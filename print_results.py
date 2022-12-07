@@ -32,14 +32,9 @@
 #       prints a summary of the results using results_dic and results_stats_dic
 #
 
-from classify_images import classify_images
-from get_pet_labels import get_pet_labels
-from adjust_results4_isadog import adjust_results4_isadog
-from calculates_results_stats import calculates_results_stats
 
-
-def print_results(results_dic,
-                  results_stats_dic,
+def print_results(results_dict,
+                  results_stats_dict,
                   model,
                   print_incorrect_dogs=False,
                   print_incorrect_breed=False) -> None:
@@ -47,48 +42,33 @@ def print_results(results_dic,
         f"*** Results Summary for CNN Model Architecture : { model.upper()} ***"
     )
 
-    print("{:20}: {:3d}".format('N Images', results_stats_dic['n_images']))
+    print("{:20}: {:3d}".format('N Images', results_stats_dict['n_images']))
     print("{:20}: {:3d}".format('N Dog Images',
-                                results_stats_dic['n_dogs_img']))
+                                results_stats_dict['n_dogs_img']))
     print("{:20}: {:3d}".format('N Not Dog Images',
-                                results_stats_dic['n_notdogs_img']))
+                                results_stats_dict['n_notdogs_img']))
 
-    print(
-        f"*** Summary Statistics for CNN Model Architecture : {model.upper()} ***"
-    )
+    for key in results_stats_dict:
+        if key[0] == "p":
+            print("{:20}: {}".format(key, results_stats_dict[key]))
 
-    print(f"Number of matching labels: {results_stats_dict['n_match']}")
+    if (print_incorrect_dogs and ((results_stats_dict['n_correct_dogs'] +
+                                   results_stats_dict['n_correct_notdogs']) !=
+                                  results_stats_dict['n_images'])):
+        print("\nINCORRECT Dog/NOT Dog Assignments:")
 
-    print(
-        f"Number of dogs matching breeds: {results_stats_dict['n_correct_breed']}"
-    )
+        for i in results_dict.values:
+            if i[2] != 1:
+                print(i[0])
 
-    print(f"Percentage of matching labels: {results_stats_dict['pct_match']}")
-    print(
-        f"Percentage of correct breed: {results_stats_dict['pct_correct_breed']}"
-    )
+    if (print_incorrect_breed and (results_stats_dict['n_correct_dogs'] !=
+                                   results_stats_dict['n_correct_breed'])):
+        print("\nINCORRECT Dog Breed Assignment:")
 
-    if (print_incorrect_dogs):
+        # process through results dict, printing incorrectly classified breeds
+        for key in results_dict:
 
-        print(
-            f"Number of incorrect dogs: {results_stats_dict['n_dogs_img']-results_stats_dict['n_correct_dogs']}"
-        )
-        print(
-            f"Percentage of incorrect dogs: {100-results_stats_dict['pct_correct_dogs']}"
-        )
-        
-    if (print_incorrect_breed):
-        print(
-            f"Number of incorrect breeds: {results_stats_dict['n_dogs_img']-results_stats_dict['n_correct_breed']}"
-        )
-        print(
-            f"Percentage of incorrect breed: {100-results_stats_dict['pct_correct_breed']}"
-        )
-
-
-results_dict = get_pet_labels('pet_images/')
-classify_images('pet_images/', results_dict, 'vgg')
-adjust_results4_isadog(results_dict, "dognames.txt")
-results_stats_dict = calculates_results_stats(results_dict)
-
-print_results(results_dict, results_stats_dict, 'VGG', False, False)
+            # Pet Image Label is-a-Dog, classified as-a-dog but is WRONG breed
+            if (sum(results_dict[key][3:]) == 2 and results_dict[key][2] == 0):
+                print("Real: {:>26}   Classifier: {:>30}".format(
+                    results_dict[key][0], results_dict[key][1]))
