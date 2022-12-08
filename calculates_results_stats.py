@@ -49,7 +49,7 @@ def calculates_results_stats(results_dic) -> dict:
         'n_match'] / results_stats_dict['n_images']
 
     results_stats_dict['pct_correct_dogs'] = 100 * results_stats_dict[
-        'n_correct_dogs'] / results_stats_dict['n_dogs_img']
+        'n_correct_breed'] / results_stats_dict['n_dogs_img']
 
     results_stats_dict['pct_correct_breed'] = round(
         100 * (results_stats_dict['n_correct_breed'] /
